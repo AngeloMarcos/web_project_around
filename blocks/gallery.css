@@ -1,0 +1,84 @@
+.gallery{
+    margin-top: 50px;
+}
+.gallery__cards{
+    display: grid;
+    grid-template-columns: 2fr 2fr 2fr;
+    gap: 17px;
+}
+.gallery__card{
+    background-color: #ffff;
+    max-width: 282px;
+    height: 361px;
+    border-radius: 5%;
+}
+
+.gallery__card_image{
+    max-width: 282px;
+    border-top-right-radius: 5%;
+    border-top-left-radius: 5%;
+}
+.gallery__card_about{
+    display: flex;
+    justify-content: space-around;
+    font-weight: 900;
+    font-size: 24px;
+    line-height: 29px;
+    max-width: 246px;
+    margin: 0 auto;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+.gallery__card_name{
+    color: rgba(0, 0, 0, 1);
+    font-size: 24px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+.gallery__card_like{
+    width: 30px;
+    background-repeat: no-repeat;
+    background-image: url("../images/like.svg");
+    background-position: center;
+    background-size: contain;
+    cursor: pointer;
+    
+}
+.gallery__card_like:hover{
+    
+    width: 30px;
+    height:   30px;
+    background-image: url("../images/like-hover.svg");
+    background-repeat: no-repeat;
+    background-position: center;
+    cursor: pointer;
+    background-size: contain;
+}
+.gallery__card_like_active{
+
+    width: 30px;
+    height:   30px;
+    background-repeat: no-repeat;
+    background-image: url("../images/lilke-black.svg");
+    background-position: center;
+    background-size: contain;
+    cursor: pointer;
+}
+
+@media screen and (min-width: 320px) and (max-width: 750px) {
+    .gallery__cards{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        row-gap: 20px;
+    }
+    .gallery__card_like{
+        margin-right: 15px;
+    }
+     .gallery__card_name{
+        margin: 0 auto;
+    }
+}
