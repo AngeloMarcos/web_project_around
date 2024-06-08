@@ -1,5 +1,4 @@
-body{
-    
+body {
     background-color: #000000;
     color: #ffffff;
     font-family: "Inter", "Arial", sans-serif;
@@ -14,4 +13,3 @@ body{
     box-sizing: border-box;
     text-rendering: optimizeLegibility;
 }
-
