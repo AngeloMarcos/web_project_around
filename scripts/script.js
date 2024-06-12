@@ -1,12 +1,13 @@
-let editPopupButton = document.querySelector('.profile__edit');
-let popup = document.querySelector('.popup');
-let editNameInput = document.querySelector('.popup__name');
-let editAboutInput = document.querySelector('.popup__about');
-let closePopupButton = document.querySelector('.popup__button_close');
-let likeButtons = document.querySelectorAll('.card__like');
-let saveButton = document.querySelector('.popup__btn_save');
-let profileName = document.querySelector('.profile__name');
-let profileAbout = document.querySelector('.profile__about');
+const editPopupButton = document.querySelector('.profile__edit');
+const popup = document.querySelector('.popup');
+const editNameInput = document.querySelector('.popup__name');
+const editAboutInput = document.querySelector('.popup__about');
+const closePopupButton = document.querySelector('.popup__button-close');
+const likeButtons = document.querySelectorAll('.card__like');
+const saveButton = document.querySelector('.popup__button-save');
+const profileName = document.querySelector('.profile__name');
+const profileAbout = document.querySelector('.profile__about');
+const form = document.querySelector('.popup__container');
 
 editNameInput.value = "Jacques Cousteau";
 editAboutInput.value = "Explorar";
@@ -25,7 +26,7 @@ likeButtons.forEach(likeButton => {
     });
 });
 
-saveButton.addEventListener("click", function (event) {
+form.addEventListener("submit", function (event) {
     event.preventDefault();
     profileName.textContent = editNameInput.value;
     profileAbout.textContent = editAboutInput.value;
