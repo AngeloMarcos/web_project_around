@@ -2,7 +2,7 @@
 .popup {
     display: none;
     padding: 20px;
-    color: black;
+    color: preto;
     flex-direction: column;
     position: fixed;
     top: 50%;
@@ -14,10 +14,13 @@
 
 .popup__input {
     text-align: center;
+    
 }
 
 .popup__title {
-    margin-left: 3%;
+    margin-left: 36px;
+    color:  rgba(0, 0, 0, 1);
+    
 }
 
 .popup__button-close {
@@ -45,7 +48,7 @@
     background-color: rgba(255, 255, 255, 1);
     border-radius: 3%;
     transition: opacity 1s;
-    position: relative; 
+    position: relative;
     margin: 0 auto;
 }
 
@@ -83,3 +86,8 @@
     }
 }
 
+@media screen and (min-width: 580px) and (max-width: 800px) {
+    .popup__container {
+        justify-items: center; 
+    }
+}

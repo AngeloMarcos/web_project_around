@@ -7,7 +7,7 @@
     grid-template-columns: repeat(3, 1fr);
     gap: 17px;
     width: 100%;
-    justify-content: center; /* Centraliza a grade de cartões */
+    justify-content: center;
 }
 
 .card__list {
@@ -15,7 +15,7 @@
     max-width: 282px;
     height: 361px;
     border-radius: 5%;
-    margin: 0 auto; /* Centraliza cada cartão */
+    margin: 0 auto;
 }
 
 .card__image {
@@ -37,7 +37,18 @@
     white-space: nowrap;
     overflow: hidden;
 }
-
+.cards__card_bin {
+    position: absolute;
+    width: 18px;
+    height: 19px;
+    background-image: url("../images/trashWhite.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    cursor: pointer;
+    top: 18px;
+    right: 15px;
+  }
 .card__name {
     color: rgba(0, 0, 0, 1);
     font-size: 24px;
@@ -60,14 +71,14 @@
 }
 
 .card__like_active {
-    background-image: url("../images/like-black.svg");
+    background-image: url("../images/lilke-black.svg");
 }
 
 /* Media Queries */
 @media screen and (min-width: 320px) and (max-width: 580px) {
     .card__gallery {
-        grid-template-columns: 1fr; 
-        justify-items: center; /* Centraliza os cartões na coluna única */
+        grid-template-columns: 1fr;
+        justify-items: center;
     }
 
     .card__like {
@@ -82,6 +93,6 @@
 @media screen and (min-width: 580px) and (max-width: 800px) {
     .card__gallery {
         grid-template-columns: repeat(2, 1fr);
-        justify-items: center; /* Centraliza os cartões na grade de duas colunas */
+        justify-items: center;
     }
 }

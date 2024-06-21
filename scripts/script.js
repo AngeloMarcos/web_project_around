@@ -13,11 +13,11 @@ editNameInput.value = "Jacques Cousteau";
 editAboutInput.value = "Explorar";
 
 editPopupButton.addEventListener("click", function () {
-    popup.classList.add("popup_opened");
+    popup.classList.add("popup_openedsd");
 });
 
 closePopupButton.addEventListener("click", function () {
-    popup.classList.remove("popup_opened");
+    popup.classList.remove("popup_openedsd");
 });
 
 likeButtons.forEach(likeButton => {
