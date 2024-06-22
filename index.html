@@ -1,107 +1,83 @@
 <!DOCTYPE html>
 <html lang="pt">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="author" content="Angelo Marcos" />
-    <meta name="description" content="Portfólio de Angelo Marcos" />
-    <meta name="keywords" content="html, css, javascript" />
-    <title>Around The U.S.</title>
-    <link rel="shortcut icon" href="favicon.ico" />
-    <link rel="stylesheet" href="./pages/index.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="author" content="Angelo Marcos">
+  <meta name="description" content="Portfólio de Angelo Marcos">
+  <meta name="keywords" content="html, css, javascript">
+  <link rel="stylesheet" href="page/index.css">
+  <title>Around the US</title>
 </head>
+
 <body class="body">
   <div class="page">
     <header class="header">
-        <div class="header__logo-content">
-            <img src="./images/logo.png" class="header__logo" alt="Imagem da logo">
-        </div>
+      <div class="header__logo-content">
+        <img src="./images/logo.png" class="header__logo" alt="Imagem da logo">
+      </div>
     </header>
+
     <main class="main">
-        <section class="profile">
-            
-            <div class="profile__content">
-                    
-      <div class="cards__card_bin"></div>
-                <img src="./images/profile__image.jpg" class="profile__image" alt="Imagem de perfil">   
-                <div class="profile__text">
-                    <div class="profile__title">
-                        <p class="profile__name">Jacques Cousteau</p>
-                        <div class="profile__edit"></div>
-                    </div>
-                    <p class="profile__about">Explorar</p>
-                </div>
+      <section class="profile">
+        <div class="profile__content">
+          <img src="./images/profile__image.jpg" class="profile__image" alt="Imagem de perfil">
+          <div class="profile__text">
+            <div class="profile__title">
+              <p class="profile__name">Jacques Cousteau</p>
+              <div class="profile__edit"></div>
             </div>
-            <div class="profile__add"></div>
-        </section>
-        <section class="card">
-            <div class="card__gallery">
-                <div class="card__list">
-                    <img class="card__image" src="./images/florest.jpg" alt="Imagem de post">
-                    <div class="card__about"> 
-                        <p class="card__name">Vale de Yosemite</p>
-                        <div class="card__like"></div>
-                    </div>
-                </div>
-                
-                <div class="card__list">
-                    <img class="card__image" src="./images/lago.jpg" alt="Imagem de post">
-                    <div class="card__about"> 
-                        <p class="card__name">Lago Louise</p>
-                        <div class="card__like"></div>
-                    </div>
-                </div>
-                
-                <div class="card__list">
-                    <img class="card__image" src="./images/montanha.png" alt="Imagem de post">
-                    <div class="card__about"> 
-                        <p class="card__name">Montanhas Calvas</p>
-                        <div class="card__like"></div>
-                    </div>
-                </div>
-                
-                <div class="card__list">
-                    <img class="card__image" src="./images/latemar.jpg" alt="Imagem de post">
-                    <div class="card__about"> 
-                        <p class="card__name">Latemar</p>
-                        <div class="card__like"></div>
-                    </div>
-                </div>
-                
-                <div class="card__list">
-                    <img class="card__image" src="./images/lago2.png" alt="Imagem de post">
-                    <div class="card__about"> 
-                        <p class="card__name">Parque Nacional de la Vanoise</p>
-                        <div class="card__like"></div>
-                    </div>
-                </div>
-                
-                <div class="card__list">
-                    <img class="card__image" src="./images/lago2.png" alt="Imagem de post">
-                    <div class="card__about"> 
-                        <p class="card__name">Lago di Braies</p>
-                        <div class="card__like"></div>
-                    </div>
-                </div>
-            </div>
-        </section>
+            <p class="profile__about">Explorar</p>
+          </div>
+        </div>
+        <div class="profile__add"></div>
+      </section>
+
+      <section class="card">
+        <div class="card__gallery">
+          <h2 class="cards__h2">Grid de imagens dos parques</h2>
+          <ul class="cards__container"></ul>
+        </div>
+      </section>
     </main>
-    <footer class="footer">
-        <p class="footer__copy">&copy;2020 Around The U.S.</p>
-    </footer>
+
+    <footer class="footer">&copy;2020 Around The U.S.</footer>
+
     <section class="popup">
-        <form class="popup__container" >
-            <a class="popup__button-close"></a>
-            
-            <h2 class="popup__title">Editar perfil</h2>
-            <div class="popup__input">
-                <input class="popup__edit-text popup__name" required type="text" placeholder="Nome">
-                <input class="popup__edit-text popup__about" required type="text" placeholder="Sobre">
-                <button class="popup__button-save" type="submit">Salvar</button>
-            </div>
-        </form>
+      <form class="popup__container">
+        <h2 class="popup__title"></h2>
+        <div class="popup__close"></div>
+        
+        <input class="popup__edit-text popup__name" required type="text" placeholder="Nome">
+        <input class="popup__edit-text popup__about" required type="text" placeholder="Sobre">
+
+        <button class="popup__button-save" type="submit"></button>
+      </form>
+    </section>
+
+    <template id="template-card">
+      <li class="cards__card">
+        <div class="cards__card_bin"></div>
+        <img class="cards__card_image">
+        <div class="cards__card_text">
+          <p class="cards__card_name"></p>
+          <div class="cards__card_heart"></div>
+        </div>
+      </li>
+    </template>
+
+    <section class="modalImage">
+      <div class="modalImage__container">
+        <span class="modalImage__close"></span>
+        <img class="modalImage__content">
+        <p class="modalImage__caption"></p>
+      </div>
     </section>
   </div>
+
   <script src="scripts/script.js"></script>
+  <script src="scripts/validate.js"></script>
 </body>
+
 </html>
