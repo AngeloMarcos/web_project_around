@@ -33,7 +33,7 @@ const close = document.querySelector(".popup__close");
 const imageClose = document.querySelector(".modalImage__close");
 const popup = document.querySelector(".popup");
 const button = document.querySelector(".popup__button-save");
-const cardsContainer = document.querySelector(".cards__container");
+const cardsContainer = document.querySelector(".card__container");
 const modalImage = document.querySelector(".modalImage");
 
 // Função para criar um novo card a partir do template e preencher com dados
@@ -126,7 +126,7 @@ function procesarPopup(e) {
     document.querySelector(".profile__about").textContent =
       document.querySelector(".popup__about").value;
   }
-  if (tipoTitulo.textContent === "Novo Lugar") {
+  if (tipoTitulo.textContent === "Novo Local") {
     addCard();
   }
   closePopup();
