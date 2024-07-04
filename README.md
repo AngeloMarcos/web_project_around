@@ -15,7 +15,7 @@ Esse projeto foi desenvolvido com as seguintes tecnologias:
 
 # Projeto
 
-No projeto dessa sprint 8 foi proposto o pojeto de criar uma página web onde é possivel exibir alguns posts, alterar nome e status do perfil.
+No projeto dessa sprint 9 foi proposto o pojeto de criar uma página web onde é possivel exibir alguns posts, alterar nome e status do perfil.
 
 ***************************************************************************************************************************************************
 
