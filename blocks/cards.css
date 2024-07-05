@@ -87,11 +87,11 @@
 }
 
 .cards__card_heart:hover {
-  background-image: url("../images/heart2.svg");
+  opacity: 0.5;
 }
 
 .cards__card_active {
-  background-image: url("../images/Union.png");
+  background-image: url("../images/lilke-black.svg");
 }
 
 @media screen and (min-width: 320px) and (max-width: 750px) {

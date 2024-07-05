@@ -45,12 +45,15 @@
     <footer class="footer">&copy;2020 Around The U.S.</footer>
 
     <section class="popup">
-      <form class="popup__container">
+      <form class="popup__container" novalidate>
         <h2 class="popup__title"></h2>
         <div class="popup__close"></div>
         
-        <input class="popup__edit-text popup__name" required type="text" placeholder="Nome">
-        <input class="popup__edit-text popup__about" required type="text" placeholder="Sobre">
+        <input id="popup-name" class="popup__edit-text popup__name" minlength="2" maxlength="40" required type="text" placeholder="Nome">
+        <span class="popup__error" id="popup-name-error"></span>
+
+        <input id="popup-about" class="popup__edit-text popup__about" minlength="2" maxlength="40" required type="text" placeholder="Sobre">
+        <span class="popup__error" id="popup-about-error"></span>
 
         <button class="popup__button-save" type="submit"></button>
       </form>
