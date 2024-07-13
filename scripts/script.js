@@ -77,12 +77,44 @@ function closePopup(popup) {
 function openModal() {
   modalImage.style.display = "block";
 }
-
 function closeModal() {
-  modalImage.classList.remove("modalImage_opened");
   modalImage.style.display = "none";
 }
 
+// Função para fechar o popup
+function closePopup(popup) {
+  popup.classList.remove("popup_opened");
+  setTimeout(function () {
+    popup.style.display = "none";
+  }, 1000);
+}
+
+// Adiciona event listeners para interações com os popups
+document.querySelectorAll('.popup').forEach(popup => {
+  // Fechar popup ao clicar fora do conteúdo
+  popup.addEventListener('click', function (evt) {
+    const elemento = evt.target;
+    if (
+      !elemento.classList.contains("popup__container") &&
+      !elemento.classList.contains("popup__title") &&
+      !elemento.classList.contains("popup__edit-text")
+    ) {
+      closePopup(popup);
+    }
+  });
+});
+
+// Fechar popup ao pressionar a tecla Escape
+document.addEventListener('keydown', function (evt) {
+  if (evt.key === 'Escape') {
+    document.querySelectorAll('.popup_opened').forEach(popup => {
+      closePopup(popup);
+    });
+    if (document.querySelector('.modalImage_opened')) {
+      closeModal();
+    }
+  }
+});
 function procesarPopup(e) {
   e.preventDefault();
   const popup = e.target.closest(".popup");
