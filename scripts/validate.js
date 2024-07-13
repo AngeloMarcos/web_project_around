@@ -66,18 +66,17 @@ function hideInputError(formElement, inputElement, settings) {
   errorElement.textContent = "";
 }
 
-// Função para obter mensagem de erro baseada na validade do input
 function getErrorMessage(inputElement) {
   if (inputElement.validity.valueMissing) {
     return "Preencha esse campo.";
   }
-  if (inputElement.validity.tooShort) {
-    return "Preencha esse campo.";
+  if (inputElement.type === "text" && inputElement.validity.tooShort) {
+    return "Preencha esse campo com pelo menos 2 caracteres.";
   }
-  if (inputElement.validity.typeMismatch && inputElement.type === "url") {
-    return "Por favor, insira um endereço web.";
+  if (inputElement.type === "url" && inputElement.validity.typeMismatch) {
+    return "Por favor, insira um endereço web válido.";
   }
- 
+  return "";
 }
 
 // Função para verificar a validade do input
