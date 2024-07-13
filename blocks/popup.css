@@ -58,13 +58,10 @@
   border-color: red;
 }
 
-.popup__name {
+.popup__edit-text{
   margin-bottom: 43px;
 }
 
-.popup__about {
-  margin-bottom: 48px;
-}
 
 .popup__input-error_active {
   opacity: 1;
