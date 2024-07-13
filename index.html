@@ -42,22 +42,41 @@
       </section>
     </main>
 
-    <footer class="footer">&copy;2020 Around The U.S.</footer>
+    <footer class="footer">&copy;2024 Around The U.S.</footer>
 
-    <section class="popup">
-      <form class="popup__container" novalidate>
-        <h2 class="popup__title"></h2>
+    <section class="popup" id="popup-profile">
+      <form class="popup__form" novalidate>
+        <h2 class="popup__title">Editar perfil</h2>
         <div class="popup__close"></div>
         
-        <input id="popup-name" class="popup__edit-text popup__name" minlength="2" maxlength="40" required type="text" placeholder="Nome">
-        <span class="popup__error" id="popup-name-error"></span>
-
-        <input id="popup-about" class="popup__edit-text popup__about" minlength="2" maxlength="40" required type="text" placeholder="Sobre">
-        <span class="popup__error" id="popup-about-error"></span>
-
-        <button class="popup__button-save" type="submit"></button>
+        <div class="popup__input-profile">
+          <input id="popup-profile-name" class="popup__edit-text popup__name" minlength="2" maxlength="40" required type="text" placeholder="Nome">
+          <span class="popup__error" id="popup-profile-name-error"></span>
+    
+          <input id="popup-profile-about" class="popup__edit-text popup__about" minlength="2" maxlength="40" required type="text" placeholder="Sobre">
+          <span class="popup__error" id="popup-profile-about-error"></span>
+        </div>
+        <button class="popup__button-save " type="submit">Salvar</button>
       </form>
     </section>
+    
+    <section class="popup" id="popup-card">
+      <form class="popup__form" novalidate>
+        <h2 class="popup__title">Novo Local</h2>
+        <div class="popup__close"></div>
+    
+        <div class="popup__input-card"> 
+          <input id="popup-card-name" class="popup__edit-text popup__image-name" minlength="2" maxlength="40" required type="text" placeholder="Nome">
+          <span class="popup__error" id="popup-card-name-error"></span>
+    
+          <input id="popup-card-link" class="popup__edit-text popup__image-link" type="url" pattern="https?://.+" minlength="2" required placeholder="Link da Imagem">
+          <span class="popup__error" id="popup-card-link-error"></span>
+        </div>
+        <button class="popup__button-save" type="submit">Salvar</button>
+      </form>
+    </section>
+    
+    
 
     <template id="template-card">
       <li class="cards__card">

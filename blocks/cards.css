@@ -78,12 +78,11 @@
 
 .cards__card_heart {
   min-width: 30px;
-    background-repeat: no-repeat;
-    background-image: url("../images/like.svg");
-    background-position: center;
-    background-size: contain;
-    cursor: pointer;
-
+  background-repeat: no-repeat;
+  background-image: url("../images/like.svg");
+  background-position: center;
+  background-size: contain;
+  cursor: pointer;
 }
 
 .cards__card_heart:hover {
