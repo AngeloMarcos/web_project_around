@@ -1,13 +1,11 @@
 <!DOCTYPE html>
 <html lang="pt">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="author" content="Angelo Marcos">
   <meta name="description" content="Portfólio de Angelo Marcos">
   <meta name="keywords" content="html, css, javascript">
-  <link rel="stylesheet" href="page/index.css">
   <title>Around the US</title>
 </head>
 
@@ -15,14 +13,14 @@
   <div class="page">
     <header class="header">
       <div class="header__logo-content">
-        <img src="./images/logo.png" class="header__logo" alt="Imagem da logo">
+        <img src="<%= require('./images/logo.png') %>" class="header__logo" alt="Imagem da logo">
       </div>
     </header>
 
     <main class="main">
       <section class="profile">
         <div class="profile__content">
-          <img src="./images/profile__image.jpg" class="profile__image" alt="Imagem de perfil">
+          <img src="<%= require('./images/profile__image.jpg') %>" class="profile__image" alt="Imagem de perfil">
           <div class="profile__text">
             <div class="profile__title">
               <p class="profile__name">Jacques Cousteau</p>
@@ -98,8 +96,6 @@
     </section>
   </div>
 
-  <script type="module" src="scripts/index.js"></script>
-  <script type="module" src="scripts/validate.js"></script>
 </body>
 
 </html>

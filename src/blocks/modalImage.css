@@ -46,7 +46,7 @@
 }
 
 .modalImage__close:hover {
-  background-image: url(../../../images/popup-close-hover.png);
+  background-image: url(../images/popup-close-hover.png);
 }
 
 .modalImage__caption {
@@ -75,6 +75,6 @@
   }
 
   .modalImage__close:hover {
-    background-image: url(../../../images/popup-close.png);
+    background-image: url(../images/popup-close.png);
   }
 }
