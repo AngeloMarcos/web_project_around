@@ -2,12 +2,11 @@ import './page/index.css';
 import { Card } from './scripts/Card.js';
 import { FormValidator } from './scripts/FormValidator.js';
 import { Section } from './scripts/Section.js';
-import { PopupWithImage } from './scripts/PopupWithImage.js';
+import  PopupWithImage  from './scripts/PopupWithImage.js';
 import  PopupWithForm  from './scripts/PopupWithForm.js';
 import { UserInfo } from './scripts/UserInfo.js';
 
 import './page/index.css';
-console.log('Webpack is working!');
 
 // Dados iniciais
 const initialCards = [
@@ -157,20 +156,3 @@ document.querySelectorAll(validationSettings.formSelector).forEach((formElement)
     formValidator.enableValidation();
 });
 
-// Adiciona evento para gerenciamento de ações nos cards
-cardsContainer.addEventListener("click", function (evt) {
-    if (evt.target.classList.contains("cards__card_heart")) {
-        evt.target.classList.toggle("cards__card_active");
-    }
-    if (evt.target.classList.contains("cards__card_bin")) {
-        evt.target.closest(".cards__card").remove();
-    }
-    if (evt.target.classList.contains("cards__card_image")) {
-        const url = evt.target.src;
-        const caption = evt.target.alt;
-        document.querySelector(".modalImage__content").src = url;
-        document.querySelector(".modalImage__content").alt = caption;
-        document.querySelector(".modalImage__caption").textContent = caption;
-        imagePopup.open();
-    }
-});
