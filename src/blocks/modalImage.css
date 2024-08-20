@@ -11,6 +11,7 @@
 
 .modalImage_opened {
   opacity: 1;
+  display: block;
 }
 
 .modalImage__container {

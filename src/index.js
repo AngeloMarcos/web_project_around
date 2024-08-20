@@ -39,11 +39,10 @@ const initialCards = [
 // Seletores de DOM
 const profileEditButton = document.querySelector(".profile__edit");
 const profileAddButton = document.querySelector(".profile__add");
+
 const popupProfileSelector = '#popup-profile';
 const popupCardSelector = '#popup-card';
 const cardsContainerSelector = '.card__container';
-const cardsContainer = document.querySelector(cardsContainerSelector);
-
 import './page/index.css';
 import logoSrc from './images/logo.png';
 import profileImageSrc from './images/profile__image.jpg';
@@ -101,10 +100,9 @@ const userInfo = new UserInfo({
 
 // Função de callback para o clique no card
 function handleCardClick({ name, link }) {
-    console.log('handleCardClick chamado com:', name, link);
     imagePopup.open({ name, link });
 }
-
+ 
 // Instância da classe PopupWithImage
 const imagePopup = new PopupWithImage('.modalImage');
 imagePopup.setEventListeners();
@@ -122,6 +120,7 @@ const editProfilePopup = new PopupWithForm({
 });
 editProfilePopup.setEventListeners();
 
+
 // Instância da classe PopupWithForm para adição de novo card
 const addCardPopup = new PopupWithForm({
     popupSelector: popupCardSelector,
@@ -138,7 +137,7 @@ addCardPopup.setEventListeners();
 
 // Adiciona ouvintes de eventos aos botões
 profileEditButton.addEventListener('click', () => {
-    console.log('profileEditButton clicado');
+   
     const userInfoData = userInfo.getUserInfo();
     document.querySelector('#popup-profile-name').value = userInfoData.name;
     document.querySelector('#popup-profile-about').value = userInfoData.job;
@@ -146,10 +145,17 @@ profileEditButton.addEventListener('click', () => {
 });
 
 profileAddButton.addEventListener('click', () => {
-    console.log('profileAddButton clicado');
+    
     addCardPopup.open();
 });
 
+const closeModal = document.querySelector('.modalImage__close');
+
+closeModal.addEventListener('click', () => {
+    console.log('Botão de fechar clicado para fechar a imagem modal');
+   
+    imagePopup.close();  // Fechar o modal de imagem
+});
 // Instancia os validadores de formulário
 document.querySelectorAll(validationSettings.formSelector).forEach((formElement) => {
     const formValidator = new FormValidator(validationSettings, formElement);

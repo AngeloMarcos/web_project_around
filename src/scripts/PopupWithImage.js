@@ -1,13 +1,23 @@
-import  Popup from './Popup.js';
+import Popup from './Popup.js';
 
 export default class PopupWithImage extends Popup {
-    open({ link, name }) {
-        console.log('Abrindo imagem popup:', link, name);
-        const image = this._popup.querySelector('.modalImage__content');
-        const caption = this._popup.querySelector('.modalImage__caption');
-        image.src = link;
-        image.alt = name;
-        caption.textContent = name;
-        super.open();
+    constructor(popupSelector) {
+        // Chama o construtor da classe pai (Popup)
+        super(popupSelector);
+        // Seleciona os elementos da imagem e legenda dentro do popup
+        this._imageElement = this._popup.querySelector('.modalImage__content');
+        this._captionElement = this._popup.querySelector('.modalImage__caption');
+    }
+
+        open({ link, name }) {
+        this._imageElement.src = link;
+        this._imageElement.alt = name;
+        this._captionElement.textContent = name;
+        this._popup.classList.add('modalImage_opened');
+    }
+        close (){
+        
+        super.close();
+        this._popup.classList.remove('modalImage_opened');
     }
 }
