@@ -5,45 +5,32 @@ import { Section } from './scripts/Section.js';
 import  PopupWithImage  from './scripts/PopupWithImage.js';
 import  PopupWithForm  from './scripts/PopupWithForm.js';
 import { UserInfo } from './scripts/UserInfo.js';
+import Api from './scripts/Api.js'; 
 
-import './page/index.css';
-
-// Dados iniciais
-const initialCards = [
-    {
-        name: "Vale de Yosemite",
-        link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_yosemite.jpg"
-    },
-    {
-        name: "Lago Louise",
-        link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_lake-louise.jpg"
-    },
-    {
-        name: "Montanhas Carecas",
-        link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_bald-mountains.jpg"
-    },
-    {
-        name: "Latemar",
-        link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_latemar.jpg"
-    },
-    {
-        name: "Parque Nacional da Vanoise",
-        link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_vanoise.jpg"
-    },
-    {
-        name: "Lago di Braies",
-        link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_lago.jpg"
+const api = new Api({
+    baseUrl: "https://around.nomoreparties.co/v1/web-ptbr-cohort-12",
+    headers: {
+        authorization: "c27e8b71-839c-45ed-b81c-981deeb16426",
+        "Content-Type": "application/json"
     }
-];
+});
 
-// Seletores de DOM
+api.getInitialCards().then((cards) => {
+    cards.forEach((cardData) => {
+        const cardElement = createCard(cardData);
+        cardList.addItem(cardElement);
+    });
+}).catch(err => {
+    console.log("Erro ao carregar os cartões:", err);
+});
+
+
 const profileEditButton = document.querySelector(".profile__edit");
 const profileAddButton = document.querySelector(".profile__add");
 
 const popupProfileSelector = '#popup-profile';
 const popupCardSelector = '#popup-card';
 const cardsContainerSelector = '.card__container';
-import './page/index.css';
 import logoSrc from './images/logo.png';
 import profileImageSrc from './images/profile__image.jpg';
 import addIconSrc from './images/add.svg';
@@ -82,7 +69,6 @@ function createCard(data) {
 
 // Instância da classe Section
 const cardList = new Section({
-    items: initialCards,
     renderer: (item) => {
         const cardElement = createCard(item);
         cardList.addItem(cardElement);
@@ -98,6 +84,16 @@ const userInfo = new UserInfo({
     jobSelector: '.profile__about'
 });
 
+api.getUserInfo().then((result) => {
+    userInfo.setUserInfo({
+        name: result.name,
+        job: result.about
+    });
+    document.querySelector('.profile__image').src = result.avatar;
+}).catch(err => {
+    console.log("Erro ao carregar as informações do usuário:", err);
+});
+
 // Função de callback para o clique no card
 function handleCardClick({ name, link }) {
     imagePopup.open({ name, link });
@@ -107,32 +103,38 @@ function handleCardClick({ name, link }) {
 const imagePopup = new PopupWithImage('.modalImage');
 imagePopup.setEventListeners();
 
-// Instância da classe PopupWithForm para edição do perfil
 const editProfilePopup = new PopupWithForm({
     popupSelector: popupProfileSelector,
     handleFormSubmit: (formData) => {
-        console.log('editProfilePopup handleFormSubmit chamado com:', formData);
-        userInfo.setUserInfo({
+        api.updateUserInfo({
             name: formData['popup-profile-name'],
-            job: formData['popup-profile-about']
+            about: formData['popup-profile-about']
+        }).then((updatedUserInfo) => {
+            userInfo.setUserInfo(updatedUserInfo);
+        }).catch(err => {
+            console.log("Erro ao atualizar as informações do usuário:", err);
         });
     }
 });
+
 editProfilePopup.setEventListeners();
 
 
-// Instância da classe PopupWithForm para adição de novo card
 const addCardPopup = new PopupWithForm({
     popupSelector: popupCardSelector,
     handleFormSubmit: (formData) => {
-       
-        const newCard = createCard({
+        api.addCard({
             name: formData['popup-card-name'],
             link: formData['popup-card-link']
+        }).then((newCard) => {
+            const cardElement = createCard(newCard);
+            cardList.addItem(cardElement);
+        }).catch(err => {
+            console.log("Erro ao adicionar um novo cartão:", err);
         });
-        cardList.addItem(newCard);
     }
 });
+
 addCardPopup.setEventListeners();
 
 // Adiciona ouvintes de eventos aos botões

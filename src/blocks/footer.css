@@ -9,14 +9,6 @@
   padding-bottom: 60px;
 }
 
-/*@media screen and (min-width: 320px) and (max-width: 750px) {
-  .footer {
-    width: 282px;
-    padding-top: 48px;
-    padding-bottom: 36px;
-    line-height: 16.94px;
-  }
-}*/
 
 @media screen and (max-width: 320px){
   .footer{
