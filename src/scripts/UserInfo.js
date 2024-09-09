@@ -1,6 +1,5 @@
 class UserInfo {
     constructor({ nameSelector, jobSelector }) {
-        console.log("user info");
         this._nameElement = document.querySelector(nameSelector);
         this._jobElement = document.querySelector(jobSelector);
     }

@@ -20,17 +20,20 @@
     <main class="main">
       <section class="profile">
         <div class="profile__content">
-          <img src="<%= require('./images/profile__image.jpg') %>" class="profile__image" alt="Imagem de perfil">
+          <div class="profile__image-container">
+            <img src="<%= require('./images/profile__image.jpg') %>" class="profile__image" alt="Imagem de perfil">
+          </div>
           <div class="profile__text">
             <div class="profile__title">
               <p class="profile__name">Jacques Cousteau</p>
-              <div class="profile__edit"></div>
+              <div  class="profile__edit"></div>
             </div>
             <p class="profile__about">Explorar</p>
           </div>
         </div>
         <div class="profile__add"></div>
       </section>
+      
 
       <section class="card">
         <div class="card__gallery">
@@ -79,21 +82,43 @@
     <template id="template-card">
       <li class="cards__card">
         <div class="cards__card_bin"></div>
-        <img class="cards__card_image">
+        <img class="cards__card_image" src="" alt="">
         <div class="cards__card_text">
           <p class="cards__card_name"></p>
-          <div class="cards__card_heart"></div>
+          <div class="cards__card_like-info">
+            <button class="cards__card_heart" aria-label="Curtir"></button> <!-- Botão de curtida -->
+            
+            <p class="cards__card_like-count">0</p> <!-- Contador de curtidas -->
+          </div>
         </div>
       </li>
     </template>
+    
+    
+    
 
-    <section class="modalImage ">
+    <section class="modalImage">
       <div class="modalImage__container">
         <span class="modalImage__close"></span>
         <img class="modalImage__content">
         <p class="modalImage__caption"></p>
       </div>
     </section>
+
+    <!-- Modal HTML -->
+    <section class="modalProfile" id="modalProfile">
+      <div class="modalProfile__container">
+        <button class="modalProfile__close" id="modalClose"></button>
+        <h2 class="modalProfile__title">Alterar foto de perfil</h2>
+        <form class="modalProfile__form">
+          <input type="file" class="modalProfile__input" accept="image/*">
+          <button type="submit" class="modalProfile__submit-button">Salvar</button>
+        </form>
+      </div>
+    </section>
+
+    
+
   </div>
 
 </body>

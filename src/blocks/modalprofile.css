@@ -1,0 +1,59 @@
+/* Estilo para o modal */
+.modalProfile {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5); /* Escurece o fundo */
+  display: none; /* Inicialmente oculto */
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* Garante que o modal fique sobre outros elementos */
+}
+
+.modalProfile__container {
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  position: relative;
+  width: 300px; /* Ajuste conforme necessário */
+}
+
+.modalProfile__close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 24px;
+  height: 24px;
+  background: url('../images/close.svg') no-repeat center center;
+  background-size: contain;
+  border: none;
+  cursor: pointer;
+}
+.modal__popup_opened {
+  display: block;
+}
+.modalProfile__title {
+  margin: 0;
+  font-size: 18px;
+  text-align: center;
+}
+
+.modalProfile__form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.modalProfile__input {
+  margin-bottom: 10px;
+}
+
+.modalProfile__submit-button {
+  background: #000;
+  color: #fff;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+}

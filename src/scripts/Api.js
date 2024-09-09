@@ -9,101 +9,81 @@ export default class Api {
         if (res.ok) {
             return res.json();
         }
-        return Promise.reject(`Erro: ${res.status}`);
+        return res.json().then((err) => Promise.reject(`Erro: ${res.status} - ${err.message}`));
     }
 
     // Método para tratar erros de requisição
     _handleError(error) {
         console.error(error);
+        // Retornar algo mesmo em caso de erro, para manter a consistência das Promises
+        return Promise.reject(error);
     }
 
-    // Método para obter as informações do usuário
+    // Método auxiliar para centralizar fetch
+    _fetch(url, options = {}) {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 10000); // Timeout de 10 segundos
+    
+        return fetch(`${this._baseUrl}${url}`, {
+            headers: this._headers,
+            signal: controller.signal,
+            ...options
+        })
+        .then((res) => {
+            clearTimeout(timeoutId); // Limpa o timeout no then
+            return this._checkResponse(res);
+        })
+        .catch((error) => {
+            clearTimeout(timeoutId); // Limpa o timeout no catch
+            return this._handleError(error);
+        });
+    }
+    
+    // Métodos da API
     getUserInfo() {
-        return fetch(`${this._baseUrl}/users/me`, {
-            headers: this._headers
-        })
-        .then(this._checkResponse)
-        .catch(this._handleError);
+        return this._fetch('/users/me');
     }
 
-    // Método para obter os cartões iniciais
     getInitialCards() {
-        return fetch(`${this._baseUrl}/cards`, {
-            headers: this._headers
-        })
-        .then(this._checkResponse)
-        .catch(this._handleError);
+        return this._fetch('/cards');
     }
 
-    // Método para atualizar as informações do perfil do usuário
     updateUserInfo(data) {
-        return fetch(`${this._baseUrl}/users/me`, {
+        return this._fetch('/users/me', {
             method: 'PATCH',
-            headers: this._headers,
             body: JSON.stringify(data)
-        })
-        .then(this._checkResponse)
-        .catch(this._handleError);
+        });
     }
 
-    // Método para adicionar um novo cartão
     addCard(data) {
-        return fetch(`${this._baseUrl}/cards`, {
+        return this._fetch('/cards', {
             method: 'POST',
-            headers: this._headers,
             body: JSON.stringify(data)
-        })
-        .then(this._checkResponse)
-        .catch(this._handleError);
+        });
     }
 
-    // Método para curtir um cartão
     likeCard(cardId) {
-        return fetch(`${this._baseUrl}/cards/likes/${cardId}`, {
-            method: 'PUT',
-            headers: this._headers
-        })
-        .then(this._checkResponse)
-        .catch(this._handleError);
-    }
-
-    // Método para remover a curtida de um cartão
+    return this._fetch(`/cards/likes/${cardId}`, {
+        method: 'PUT'
+    });
+}
+    
     unlikeCard(cardId) {
-        return fetch(`${this._baseUrl}/cards/likes/${cardId}`, {
-            method: 'DELETE',
-            headers: this._headers
-        })
-        .then(this._checkResponse)
-        .catch(this._handleError);
+        return this._fetch(`/cards/likes/${cardId}`, {
+            method: 'DELETE'
+        });
     }
-
-    // Método para deletar um cartão
+    
     deleteCard(cardId) {
-        return fetch(`${this._baseUrl}/cards/${cardId}`, {
-            method: 'DELETE',
-            headers: this._headers
-        })
-        .then(this._checkResponse)
-        .catch(this._handleError);
+        return this._fetch(`/cards/${cardId}`, {
+            method: 'DELETE'
+        });
     }
 
-    // Método para atualizar a foto do perfil
     updateAvatar(data) {
-        return fetch(`${this._baseUrl}/users/me/avatar`, {
+        return this._fetch('/users/me/avatar', {
             method: 'PATCH',
-            headers: this._headers,
             body: JSON.stringify(data)
-        })
-        .then(this._checkResponse)
-        .catch(this._handleError);
+        });
     }
 }
-
-// Instanciar a classe API com as configurações necessárias
-const api = new Api({
-    baseUrl: "https://around.nomoreparties.co/v1/web-ptbr-cohort-12",
-    headers: {
-        authorization: "c27e8b71-839c-45ed-b81c-981deeb16426",
-        "Content-Type": "application/json"
-    }
-});

@@ -2,11 +2,18 @@ import './page/index.css';
 import { Card } from './scripts/Card.js';
 import { FormValidator } from './scripts/FormValidator.js';
 import { Section } from './scripts/Section.js';
-import  PopupWithImage  from './scripts/PopupWithImage.js';
-import  PopupWithForm  from './scripts/PopupWithForm.js';
+import PopupWithImage from './scripts/PopupWithImage.js';
+import PopupWithForm from './scripts/PopupWithForm.js';
 import { UserInfo } from './scripts/UserInfo.js';
-import Api from './scripts/Api.js'; 
+import ModalProfile from './scripts/ModalProfile.js';
+import Api from './scripts/Api.js';
 
+import logoSrc from './images/logo.png';
+import profileImageSrc from './images/profile__image.jpg';
+import addIconSrc from './images/add.svg';
+import editIconSrc from './images/edit.svg';
+
+// Instância da API
 const api = new Api({
     baseUrl: "https://around.nomoreparties.co/v1/web-ptbr-cohort-12",
     headers: {
@@ -15,26 +22,14 @@ const api = new Api({
     }
 });
 
-api.getInitialCards().then((cards) => {
-    cards.forEach((cardData) => {
-        const cardElement = createCard(cardData);
-        cardList.addItem(cardElement);
-    });
-}).catch(err => {
-    console.log("Erro ao carregar os cartões:", err);
-});
-
-
+let userId; // Variável para armazenar o ID do usuário
+const modalProfile = '#modalProfile';
 const profileEditButton = document.querySelector(".profile__edit");
 const profileAddButton = document.querySelector(".profile__add");
-
+const profileEditimage = document.querySelector(".profile__image-container");
 const popupProfileSelector = '#popup-profile';
 const popupCardSelector = '#popup-card';
 const cardsContainerSelector = '.card__container';
-import logoSrc from './images/logo.png';
-import profileImageSrc from './images/profile__image.jpg';
-import addIconSrc from './images/add.svg';
-import editIconSrc from './images/edit.svg';
 
 const profileImage = document.querySelector('.profile__image');
 profileImage.src = profileImageSrc;
@@ -48,58 +43,89 @@ profileEdit.style.backgroundImage = `url(${editIconSrc})`;
 const profileAdd = document.querySelector('.profile__add');
 profileAdd.style.backgroundImage = `url(${addIconSrc})`;
 
-// Continue with other initializations and event listeners as required
+function handleLikeClick(cardId, isLiked, card) {
+    console.log(`Curtindo ou removendo curtida para o cartão: ${cardId}. Curtido: ${isLiked}`);
+    
+    let apiCall;
 
+    if (isLiked) {
+        apiCall = api.unlikeCard(cardId);  
+    } else {
+        apiCall = api.likeCard(cardId);    
+    }
 
-// Configurações do validador de formulário
-const validationSettings = {
-    formSelector: ".popup__form",
-    inputSelector: ".popup__edit-text",
-    submitButtonSelector: ".popup__button-save",
-    inactiveButtonClass: "popup__button-disable",
-    inputErrorClass: "popup__input-error",
-    errorClass: "popup__error_visible"
-};
+    apiCall
+        .then((data) => {
+            console.log(`Atualização de curtidas recebida para o cartão: ${cardId}`);
+            card.setLikes(data.likes);  
+        })
+        .catch((err) => {
+            console.error('Erro ao atualizar curtida:', err);
+        })
+        .finally(() => {
+            card._likeButton.classList.remove('cards__card_loading');
+        });
+}
 
-// Função para criação de cards
 function createCard(data) {
-    const card = new Card(data, '#template-card', handleCardClick);
+    const card = new Card(
+        {
+            name: data.name,
+            link: data.link,
+            likes: data.likes,
+            id: data._id,
+            userId: userId,  
+            ownerId: data.owner._id
+        },
+        '#template-card',
+        handleCardClick,
+        handleLikeClick
+    );
     return card.generateCard();
 }
 
-// Instância da classe Section
 const cardList = new Section({
+    items: [],
     renderer: (item) => {
         const cardElement = createCard(item);
         cardList.addItem(cardElement);
     }
 }, cardsContainerSelector);
 
-// Renderiza os cards iniciais
-cardList.renderItems();
+api.getInitialCards()
+    .then((cards) => {
+        if (Array.isArray(cards)) {
+            cardList.renderItems(cards);
+        } else {
+            console.error("Erro: O retorno da API não é um array", cards);
+        }
+    })
+    .catch((err) => {
+        console.log("Erro ao carregar os cartões:", err);
+    });
 
-// Instância da classe UserInfo
 const userInfo = new UserInfo({
     nameSelector: '.profile__name',
     jobSelector: '.profile__about'
 });
 
-api.getUserInfo().then((result) => {
-    userInfo.setUserInfo({
-        name: result.name,
-        job: result.about
+api.getUserInfo()
+    .then((result) => {
+        userId = result._id;  
+        userInfo.setUserInfo({
+            name: result.name,
+            job: result.about
+        });
+        document.querySelector('.profile__image').src = result.avatar;
+    })
+    .catch((err) => {
+        console.log("Erro ao carregar as informações do usuário:", err);
     });
-    document.querySelector('.profile__image').src = result.avatar;
-}).catch(err => {
-    console.log("Erro ao carregar as informações do usuário:", err);
-});
 
-// Função de callback para o clique no card
 function handleCardClick({ name, link }) {
     imagePopup.open({ name, link });
 }
- 
-// Instância da classe PopupWithImage
+
 const imagePopup = new PopupWithImage('.modalImage');
 imagePopup.setEventListeners();
 
@@ -119,7 +145,6 @@ const editProfilePopup = new PopupWithForm({
 
 editProfilePopup.setEventListeners();
 
-
 const addCardPopup = new PopupWithForm({
     popupSelector: popupCardSelector,
     handleFormSubmit: (formData) => {
@@ -137,30 +162,37 @@ const addCardPopup = new PopupWithForm({
 
 addCardPopup.setEventListeners();
 
-// Adiciona ouvintes de eventos aos botões
+
 profileEditButton.addEventListener('click', () => {
-   
     const userInfoData = userInfo.getUserInfo();
     document.querySelector('#popup-profile-name').value = userInfoData.name;
     document.querySelector('#popup-profile-about').value = userInfoData.job;
     editProfilePopup.open();
 });
 
+profileEditimage.addEventListener('click', () => {
+    ModalProfile.open();
+});
 profileAddButton.addEventListener('click', () => {
-    
     addCardPopup.open();
 });
 
-const closeModal = document.querySelector('.modalImage__close');
 
+const closeModal = document.querySelector('.modalImage__close');
 closeModal.addEventListener('click', () => {
-    console.log('Botão de fechar clicado para fechar a imagem modal');
-   
-    imagePopup.close();  // Fechar o modal de imagem
+    imagePopup.close();  
 });
-// Instancia os validadores de formulário
+
+const validationSettings = {
+    formSelector: ".popup__form",
+    inputSelector: ".popup__edit-text",
+    submitButtonSelector: ".popup__button-save",
+    inactiveButtonClass: "popup__button-disable",
+    inputErrorClass: "popup__input-error",
+    errorClass: "popup__error_visible"
+};
+
 document.querySelectorAll(validationSettings.formSelector).forEach((formElement) => {
     const formValidator = new FormValidator(validationSettings, formElement);
     formValidator.enableValidation();
 });
-

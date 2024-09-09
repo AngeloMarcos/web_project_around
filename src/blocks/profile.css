@@ -11,14 +11,51 @@
   align-items: center;
 }
 
-.profile__image {
+.profile__image-container {
+  position: relative; /* Necessário para o pseudo-elemento ::after */
   border-radius: 50%;
-  max-width: 120px;
+  width: 120px; /* Largura fixa */
+  height: 120px; /* Altura fixa para manter o formato circular */
+  overflow: hidden; /* Garante que a imagem não ultrapasse o contêiner */
 }
-.profile__text{
-  
+
+.profile__image {
+  width: 100%; /* Faz a imagem cobrir todo o contêiner */
+  height: 100%;
+  object-fit: cover; /* Corta a imagem para cobrir todo o contêiner sem distorção */
+  object-position: center; /* Centraliza a imagem no contêiner */
+  transition: filter 0.3s ease; /* Suave transição para o efeito de escurecimento */
+}
+
+.profile__image-container:hover .profile__image {
+  filter: brightness(50%);
+}
+
+.profile__image-container:hover::after {
+  opacity: 1; /* Torna o ícone visível ao passar o mouse */
+}
+
+.profile__image-container::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 24px; /* Tamanho do ícone */
+  height: 24px;
+  background-image: url("../images/edit.png"); /* Ícone da edição */
+  background-size: contain;
+  background-repeat: no-repeat;
+  cursor: pointer;
+  opacity: 0; /* Inicialmente invisível */
+  transition: opacity 0.3s ease; /* Suave transição ao aparecer */
+  z-index: 10; /* Garante que o ícone fique sobre a imagem */
+}
+
+.profile__text {
   align-items: center;
 }
+
 .profile__title {
   display: flex;
   align-items: center;
@@ -73,7 +110,7 @@
   box-sizing: border-box;
   border-radius: 2px;
   padding: 0;
-  flex: 0 0 auto;
+  flex: 0 0 auto;
 }
 
 .profile__add:hover {
@@ -113,7 +150,7 @@
 }
 
 @media screen and (min-width: 415px) and (max-width: 768px) {
-  .profile{
+  .profile {
     display: flex;
     flex-direction: column;
     align-items: center;
