@@ -77,7 +77,18 @@
       </form>
     </section>
     
+    <section class="popup" id="popup__profile-image"></section>
+      <form class="popup__form" novalidate>
+        <h2 class="popup__title">Nova Foto de perfil</h2>
+        <div class="popup__close"></div>
     
+        <div class="popup__input-profile-img"> 
+          <input id="popup-profile-img-link" class="popup_edit-text popup_profile-img-link" type="url" pattern="https?://.+" minlength="2" required placeholder="Link da Imagem">
+          <span class="popup__error" id="popup-profile-img-error"></span>
+        </div>
+        <button class="popup__button-save" type="submit">Salvar</button>
+      </form>
+    </section>
 
     <template id="template-card">
       <li class="cards__card">
@@ -105,17 +116,7 @@
       </div>
     </section>
 
-    <!-- Modal HTML -->
-    <section class="modalProfile" id="modalProfile">
-      <div class="modalProfile__container">
-        <button class="modalProfile__close" id="modalClose"></button>
-        <h2 class="modalProfile__title">Alterar foto de perfil</h2>
-        <form class="modalProfile__form">
-          <input type="file" class="modalProfile__input" accept="image/*">
-          <button type="submit" class="modalProfile__submit-button">Salvar</button>
-        </form>
-      </div>
-    </section>
+    
 
     
 

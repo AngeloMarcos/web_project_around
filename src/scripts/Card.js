@@ -9,6 +9,7 @@ class Card {
         this._templateSelector = templateSelector;
         this._handleCardClick = handleCardClick;
         this._handleLikeClick = handleLikeClick;
+        console.log('constructor sendo chamado', handleLikeClick);
     }
 
     _getTemplate() {
@@ -36,11 +37,9 @@ class Card {
             this._likeButton.classList.add('cards__card_loading');
 
             const isLiked = this._isLiked;
+
             this._handleLikeClick(this._id, isLiked, this)
-                .finally(() => {
-                    // Remove o indicador de carregamento após a operação
-                    this._likeButton.classList.remove('cards__card_loading');
-                });
+                
         });
     }
 

@@ -28,6 +28,7 @@ const profileEditButton = document.querySelector(".profile__edit");
 const profileAddButton = document.querySelector(".profile__add");
 const profileEditimage = document.querySelector(".profile__image-container");
 const popupProfileSelector = '#popup-profile';
+const popupProfileImage = '#popup__profile-image';
 const popupCardSelector = '#popup-card';
 const cardsContainerSelector = '.card__container';
 
@@ -78,8 +79,8 @@ function createCard(data) {
             ownerId: data.owner._id
         },
         '#template-card',
-        handleCardClick,
-        handleLikeClick
+      ({name, link}) => handleCardClick({name,link}),
+       (cardId, isLiked, card) => handleLikeClick(cardId, isLiked, card) 
     );
     return card.generateCard();
 }
@@ -130,7 +131,7 @@ const imagePopup = new PopupWithImage('.modalImage');
 imagePopup.setEventListeners();
 
 const editProfilePopup = new PopupWithForm({
-    popupSelector: popupProfileSelector,
+    popupSelector: popupProfileSelector,  
     handleFormSubmit: (formData) => {
         api.updateUserInfo({
             name: formData['popup-profile-name'],
@@ -144,6 +145,9 @@ const editProfilePopup = new PopupWithForm({
 });
 
 editProfilePopup.setEventListeners();
+
+
+
 
 const addCardPopup = new PopupWithForm({
     popupSelector: popupCardSelector,
