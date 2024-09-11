@@ -56,6 +56,7 @@ export default class Api {
     }
 
     addCard(data) {
+        console.log(data);
         return this._fetch('/cards', {
             method: 'POST',
             body: JSON.stringify(data)
