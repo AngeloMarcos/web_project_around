@@ -67,7 +67,7 @@ class Card {
     setLikes(newLikes) {
         this._likes = newLikes;
         this._likeCountElement.textContent = this._likes.length;
-        this._updateLikeState(); // Atualiza o estado do botão de curtida
+        this._updateLikeState(); 
     }
 }
 

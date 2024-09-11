@@ -23,12 +23,12 @@ export default class ModalProfile extends Popup {
   
 
     open() {
-        this._popup.classList.add('.modal__popup_opened');
+        this._popup.classList.add('modalImage_opened');
         document.addEventListener('keydown', this._handleEscClose);
     }
 
     close() {
-        this._popup.classList.remove('modal__popup_opened');
+        this._popup.classList.remove('modalImage_opened');
         document.removeEventListener('keydown', this._handleEscClose);
     }
 
