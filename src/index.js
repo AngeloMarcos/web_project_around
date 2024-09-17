@@ -21,10 +21,7 @@ const api = new Api({
         "Content-Type": "application/json"
     }
 });
-
-let userId; // Variável que armazenará o ID do usuário logado
-
-const modalProfile = new ModalProfile('#popup__profile-image'); // Seleção do modal de perfil
+let userId; // Variável que armazenará o ID do usuário logadoconst modalProfile = new ModalProfile('#popup__profile-image'); // Seleção do modal de perfil
 const profileEditButton = document.querySelector(".profile__edit"); // Botão de editar o perfil
 const profileAddButton = document.querySelector(".profile__add"); // Botão de adicionar um novo cartão
 const profileEditimage = document.querySelector(".profile__image-container"); // Contêiner da imagem do perfil
@@ -33,7 +30,6 @@ const popupProfileImage = '#popup__profile-image'; // Seleciona o popup de ediç
 const popupCardSelector = '#popup-card'; // Seleciona o popup de criação de cartão
 const cardsContainerSelector = '.card__container'; // Seleciona o contêiner de cartões
 
-// Define a imagem do perfil e do logo
 const profileImage = document.querySelector('.profile__image');
 profileImage.src = profileImageSrc;
 
@@ -74,6 +70,22 @@ function handleLikeClick(cardId, isLiked, card) {
         });
 }
 
+
+function handlerDeleteCard(cardId, cardElement){
+    
+        api.deleteCard(cardId)
+        .then(() =>{
+            cardElement.remove();
+            deletePopup.close();
+        })
+        .catch((err) => {
+            console.error('Erro ao excluir o cartão:',err);
+        });
+    
+}
+const deletePopup = new PopupWithForm({popupSelector:"#popup_type_delete-card", handleFormSubmit:handlerDeleteCard});
+
+deletePopup.setEventListeners();
 // Função para criar um novo cartão com as informações fornecidas
 function createCard(data) {
     const card = new Card(
@@ -87,7 +99,8 @@ function createCard(data) {
         },
         '#template-card',
       ({name, link}) => handleCardClick({name, link}),  // Define o comportamento ao clicar no cartão
-       (cardId, isLiked, card) => handleLikeClick(cardId, isLiked, card) // Define o comportamento ao curtir o cartão
+       (cardId, isLiked, card) => handleLikeClick(cardId, isLiked, card), // Define o comportamento ao curtir o cartão
+        (cardId, cardElement) => handlerDeleteCard(cardId, cardElement)
     );
     return card.generateCard(); // Gera o elemento HTML do cartão
 }

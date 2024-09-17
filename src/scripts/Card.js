@@ -9,7 +9,7 @@ class Card {
         this._templateSelector = templateSelector;
         this._handleCardClick = handleCardClick;
         this._handleLikeClick = handleLikeClick;
-        console.log('constructor sendo chamado', handleLikeClick);
+        
     }
 
     _getTemplate() {
@@ -21,10 +21,14 @@ class Card {
         this._element = this._getTemplate();
         this._likeButton = this._element.querySelector('.cards__card_heart');
         this._likeCountElement = this._element.querySelector('.cards__card_like-count');
+        this._deleteButton  = this._element.querySelector('cards_card_bin');
 
         this._setEventListeners();
         this._updateCardInfo();
         this._updateLikeState(); // Atualiza o estado do botão de curtida
+
+        
+
         return this._element;
     }
 
