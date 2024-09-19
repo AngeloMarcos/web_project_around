@@ -8,30 +8,17 @@ export default class ModalProfile extends Popup {
         this._fileInput = this._popup.querySelector('.modalProfile__input');
         this._submitButton = this._popup.querySelector('.modalProfile__submit-button');
         
-        this.setEventListeners(); // Use setEventListeners da classe base
+        this.setEventListeners(); // Chamando corretamente o setEventListeners
     }
 
-    _setEventListeners() {
-        super.setEventListeners();
-        this._closeButton.addEventListener('click', () => this.close());
+    setEventListeners() {
+        super.setEventListeners(); // Chamando o setEventListeners da classe base
+        
         this._popup.addEventListener('submit', (event) => {
             event.preventDefault();
             this._handleFormSubmit(this._fileInput.files[0]);
         });
     }
-
-  
-
-    open() {
-        this._popup.classList.add('modalImage_opened');
-        document.addEventListener('keydown', this._handleEscClose);
-    }
-
-    close() {
-        this._popup.classList.remove('modalImage_opened');
-        document.removeEventListener('keydown', this._handleEscClose);
-    }
-
 
     _handleFormSubmit(file) {
         console.log('Arquivo selecionado:', file);

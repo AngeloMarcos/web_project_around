@@ -7,29 +7,23 @@ import PopupWithForm from './scripts/PopupWithForm.js';
 import { UserInfo } from './scripts/UserInfo.js';
 import ModalProfile from './scripts/ModalProfile.js';
 import Api from './scripts/Api.js';
-
 import logoSrc from './images/logo.png';
 import profileImageSrc from './images/profile__image.jpg';
 import addIconSrc from './images/add.svg';
 import editIconSrc from './images/edit.svg';
 
-// Instância da API com a URL base e o cabeçalho de autorização
-const api = new Api({
-    baseUrl: "https://around.nomoreparties.co/v1/web-ptbr-cohort-12",
-    headers: {
-        authorization: "c27e8b71-839c-45ed-b81c-981deeb16426",
-        "Content-Type": "application/json"
-    }
-});
+
 let userId; // Variável que armazenará o ID do usuário logadoconst modalProfile = new ModalProfile('#popup__profile-image'); // Seleção do modal de perfil
 const profileEditButton = document.querySelector(".profile__edit"); // Botão de editar o perfil
+const deleteCardButton = document.querySelector(".cards__card_bin"); // Botão de editar o perfil
+console.log("O Botao", deleteCardButton);
 const profileAddButton = document.querySelector(".profile__add"); // Botão de adicionar um novo cartão
-const profileEditimage = document.querySelector(".profile__image-container"); // Contêiner da imagem do perfil
+const modalProfile = new ModalProfile('#popup__profile-image');
 const popupProfileSelector = '#popup-profile'; // Seleciona o popup do perfil
-const popupProfileImage = '#popup__profile-image'; // Seleciona o popup de edição da imagem do perfil
+const popupProfileImage = document.querySelector(".profile__image-container");; // Seleciona o popup de edição da imagem do perfil
 const popupCardSelector = '#popup-card'; // Seleciona o popup de criação de cartão
 const cardsContainerSelector = '.card__container'; // Seleciona o contêiner de cartões
-
+const linkImageProfile  = document.querySelector(".popup_profile-img-link");
 const profileImage = document.querySelector('.profile__image');
 profileImage.src = profileImageSrc;
 
@@ -43,6 +37,15 @@ profileEdit.style.backgroundImage = `url(${editIconSrc})`;
 const profileAdd = document.querySelector('.profile__add');
 profileAdd.style.backgroundImage = `url(${addIconSrc})`;
 
+
+// Instância da API com a URL base e o cabeçalho de autorização
+const api = new Api({
+    baseUrl: "https://around.nomoreparties.co/v1/web-ptbr-cohort-12",
+    headers: {
+        authorization: "c27e8b71-839c-45ed-b81c-981deeb16426",
+        "Content-Type": "application/json"
+    }
+});
 // Função para lidar com a curtida de um cartão
 function handleLikeClick(cardId, isLiked, card) {
     console.log(`Curtindo ou removendo curtida para o cartão: ${cardId}. Curtido: ${isLiked}`);
@@ -55,7 +58,7 @@ function handleLikeClick(cardId, isLiked, card) {
     } else {
         apiCall = api.likeCard(cardId);    // Adiciona curtida
     }
-    console.log(apiCall);
+  
     // Atualiza o estado da curtida no cartão após a resposta da API
     apiCall
         .then((data) => {
@@ -83,9 +86,20 @@ function handlerDeleteCard(cardId, cardElement){
         });
     
 }
-const deletePopup = new PopupWithForm({popupSelector:"#popup_type_delete-card", handleFormSubmit:handlerDeleteCard});
 
-deletePopup.setEventListeners();
+const deletePopup = new PopupWithForm({
+    popupSelector: '#popup_type_delete-card',
+    handleFormSubmit: (cardId) => {
+        api.deleteCard(cardId)
+            .then(() => {
+                cardElement.remove(); // Remove o cartão do DOM após a exclusão
+                deletePopup.close(); // Fecha o popup
+            })
+            .catch((err) => {
+                console.error('Erro ao excluir o cartão:', err);
+            });
+    }
+});
 // Função para criar um novo cartão com as informações fornecidas
 function createCard(data) {
     const card = new Card(
@@ -156,23 +170,6 @@ function handleCardClick({ name, link }) {
 const imagePopup = new PopupWithImage('.modalImage');
 imagePopup.setEventListeners();
 
-// Instância do popup de edição de perfil e configuração do comportamento ao submeter o formulário
-const editProfilePopup = new PopupWithForm({
-    popupSelector: popupProfileSelector,  
-    handleFormSubmit: (formData) => {
-        api.updateUserInfo({
-            name: formData['popup-profile-name'],
-            about: formData['popup-profile-about']
-        }).then((updatedUserInfo) => {
-            userInfo.setUserInfo(updatedUserInfo); // Atualiza as informações do perfil
-        }).catch(err => {
-            console.log("Erro ao atualizar as informações do usuário:", err);
-        });
-    }
-});
-
-editProfilePopup.setEventListeners(); // Adiciona os eventos de escuta para o popup de edição de perfil
-
 // Instância do popup de criação de cartão e configuração do comportamento ao submeter o formulário
 const addCardPopup = new PopupWithForm({
     popupSelector: popupCardSelector,
@@ -188,7 +185,15 @@ const addCardPopup = new PopupWithForm({
         });
     }
 });
+const popupForm = new PopupWithForm({
+    popupSelector: '#popup_type_form',
+    handleFormSubmit: (formData) => {
+        console.log('Dados do formulário:', formData);
+        // Aqui você pode lidar com os dados, como enviá-los para uma API
+    }
+});
 
+popupForm.setEventListeners();
 addCardPopup.setEventListeners(); // Adiciona os eventos de escuta para o popup de adicionar cartão
 
 // Adiciona o comportamento ao botão de editar o perfil
@@ -200,7 +205,7 @@ profileEditButton.addEventListener('click', () => {
 });
 
 // Abre o modal de edição de imagem do perfil ao clicar na imagem
-profileEditimage.addEventListener('click', () => {
+popupProfileImage.addEventListener('click', () => {
     modalProfile.open();
 });
 
@@ -209,11 +214,6 @@ profileAddButton.addEventListener('click', () => {
     addCardPopup.open();
 });
 
-// Adiciona o comportamento ao botão de fechar o modal de imagem
-const closeModal = document.querySelector('.modalImage__close');
-closeModal.addEventListener('click', () => {
-    imagePopup.close();  // Fecha o modal de imagem
-});
 
 // Configurações de validação dos formulários
 const validationSettings = {

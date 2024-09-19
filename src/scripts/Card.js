@@ -1,5 +1,5 @@
 class Card {
-    constructor(data, templateSelector, handleCardClick, handleLikeClick) {
+    constructor(data, templateSelector, handleCardClick, handleLikeClick, handleDeleteClick) {
         this._name = data.name;
         this._link = data.link;
         this._likes = data.likes;
@@ -9,7 +9,7 @@ class Card {
         this._templateSelector = templateSelector;
         this._handleCardClick = handleCardClick;
         this._handleLikeClick = handleLikeClick;
-        
+        this._handleDeleteClick = handleDeleteClick;
     }
 
     _getTemplate() {
@@ -21,31 +21,48 @@ class Card {
         this._element = this._getTemplate();
         this._likeButton = this._element.querySelector('.cards__card_heart');
         this._likeCountElement = this._element.querySelector('.cards__card_like-count');
-        this._deleteButton  = this._element.querySelector('cards_card_bin');
-
+        this._deleteButton = this._element.querySelector('.cards__card_bin');
+    
+        // Verifica se o cartão pertence ao usuário logado
+        if (this._ownerId !== this._userId) {
+            this._deleteButton.remove(); // Remove o botão de lixeira se não for o dono do cartão
+        }
+    
         this._setEventListeners();
         this._updateCardInfo();
         this._updateLikeState(); // Atualiza o estado do botão de curtida
-
-        
-
+    
         return this._element;
     }
 
     _setEventListeners() {
-        const image = this._element.querySelector('.cards__card_image');
-        image.addEventListener('click', () => this._handleCardClick({ name: this._name, link: this._link }));
-
         this._likeButton.addEventListener('click', () => {
-            // Adiciona um indicador de carregamento ao botão de curtida
-            this._likeButton.classList.add('cards__card_loading');
-
-            const isLiked = this._isLiked;
-
-            this._handleLikeClick(this._id, isLiked, this)
-                
+            this._handleLikeClick(); // Função para curtir o cartão
         });
+    
+        // Verifica se o botão de exclusão existe antes de adicionar o evento
+        if (this._deleteButton) {
+            this._deleteButton.addEventListener('click', () => {
+                // Abrir popup de confirmação de exclusão
+                deletePopup.open();
+    
+                // Listener para a confirmação da exclusão no popup
+                deletePopup.setSubmitAction(() => {
+                    // Chama a API para excluir o cartão
+                    api.deleteCard(this._id)
+                        .then(() => {
+                            // Remove o cartão do DOM após a exclusão
+                            this._element.remove();
+                            deletePopup.close(); // Fecha o popup após a exclusão
+                        })
+                        .catch((err) => {
+                            console.error('Erro ao excluir o cartão:', err);
+                        });
+                });
+            });
+        }
     }
+    
 
     _updateCardInfo() {
         const image = this._element.querySelector('.cards__card_image');
