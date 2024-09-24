@@ -15,8 +15,7 @@ import editIconSrc from './images/edit.svg';
 
 let userId; // Variável que armazenará o ID do usuário logadoconst modalProfile = new ModalProfile('#popup__profile-image'); // Seleção do modal de perfil
 const profileEditButton = document.querySelector(".profile__edit"); // Botão de editar o perfil
-const deleteCardButton = document.querySelector(".cards__card_bin"); // Botão de editar o perfil
-console.log("O Botao", deleteCardButton);
+ 
 const profileAddButton = document.querySelector(".profile__add"); // Botão de adicionar um novo cartão
 const modalProfile = new ModalProfile('#popup__profile-image');
 const popupProfileSelector = '#popup-profile'; // Seleciona o popup do perfil
@@ -47,8 +46,7 @@ const api = new Api({
     }
 });
 // Função para lidar com a curtida de um cartão
-function handleLikeClick(cardId, isLiked, card) {
-    console.log(`Curtindo ou removendo curtida para o cartão: ${cardId}. Curtido: ${isLiked}`);
+function handleLikeClick(cardId, isLiked) {
     
     let apiCall;
 
@@ -58,34 +56,27 @@ function handleLikeClick(cardId, isLiked, card) {
     } else {
         apiCall = api.likeCard(cardId);    // Adiciona curtida
     }
+    return apiCall;
   
     // Atualiza o estado da curtida no cartão após a resposta da API
-    apiCall
-        .then((data) => {
-            console.log(`Atualização de curtidas recebida para o cartão: ${cardId}`);
-            card.setLikes(data.likes);  // Atualiza o número de curtidas
-        })
-        .catch((err) => {
-            console.error('Erro ao atualizar curtida:', err);
-        })
-        .finally(() => {
-            card._likeButton.classList.remove('cards__card_loading'); // Remove o estado de carregamento do botão de curtida
-        });
+    
 }
 
 
-function handlerDeleteCard(cardId, cardElement){
-    
+function handlerDeleteCard(cardId, cardElement) {
+    deletePopup.open(); // Abre o popup para confirmação da exclusão
+    deletePopup.setSubmitAction(() => { // Define a ação ao confirmar a exclusão
         api.deleteCard(cardId)
-        .then(() =>{
-            cardElement.remove();
-            deletePopup.close();
-        })
-        .catch((err) => {
-            console.error('Erro ao excluir o cartão:',err);
-        });
-    
+            .then(() => {
+                cardElement.remove(); // Remove o cartão do DOM
+                deletePopup.close(); // Fecha o popup
+            })
+            .catch((err) => {
+                console.error('Erro ao excluir o cartão:', err);
+            });
+    });
 }
+
 
 const deletePopup = new PopupWithForm({
     popupSelector: '#popup_type_delete-card',
@@ -172,7 +163,7 @@ imagePopup.setEventListeners();
 
 // Instância do popup de criação de cartão e configuração do comportamento ao submeter o formulário
 const addCardPopup = new PopupWithForm({
-    popupSelector: popupCardSelector,
+    popupSelector: '#popup-card',
     handleFormSubmit: (formData) => {
         api.addCard({
             name: formData['popup-card-name'],
@@ -186,22 +177,39 @@ const addCardPopup = new PopupWithForm({
     }
 });
 const popupForm = new PopupWithForm({
-    popupSelector: '#popup_type_form',
+    popupSelector: '.popup_type_delete-card',
     handleFormSubmit: (formData) => {
-        console.log('Dados do formulário:', formData);
-        // Aqui você pode lidar com os dados, como enviá-los para uma API
-    }
+        
+   }
 });
 
 popupForm.setEventListeners();
 addCardPopup.setEventListeners(); // Adiciona os eventos de escuta para o popup de adicionar cartão
 
+const editProfilePopup = new PopupWithForm({
+    popupSelector: '#popup-profile',
+    handleFormSubmit: (data) => {
+        api.updateUserInfo({
+            name: data.name,
+            about: data.about
+        }).then((newProfileData) => {
+           userInfo.setUserInfo({name: data.name, about: data.about});
+        }).catch(err => {
+            console.log("erro ao atualizar nome", err);
+        });
+    }
+})
 // Adiciona o comportamento ao botão de editar o perfil
 profileEditButton.addEventListener('click', () => {
+ 
     const userInfoData = userInfo.getUserInfo(); // Obtém as informações do usuário
     document.querySelector('#popup-profile-name').value = userInfoData.name; // Preenche o campo de nome no formulário
     document.querySelector('#popup-profile-about').value = userInfoData.job; // Preenche o campo de ocupação no formulário
     editProfilePopup.open(); // Abre o popup de edição de perfil
+});
+
+deleteCardButton.addEventListener('click', () => {
+    handlerDeleteCard(cardId, cardElement); // Chame a função para deletar passando o ID e o elemento do cartão
 });
 
 // Abre o modal de edição de imagem do perfil ao clicar na imagem

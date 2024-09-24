@@ -8,7 +8,7 @@ class Card {
         this._ownerId = data.ownerId;
         this._templateSelector = templateSelector;
         this._handleCardClick = handleCardClick;
-        this._handleLikeClick = handleLikeClick;
+        this._handleLikeClick = handleLikeClick
         this._handleDeleteClick = handleDeleteClick;
     }
 
@@ -37,7 +37,16 @@ class Card {
 
     _setEventListeners() {
         this._likeButton.addEventListener('click', () => {
-            this._handleLikeClick(); // Função para curtir o cartão
+            this._handleLikeClick(this._id, this._isLiked) 
+            .then((data) => {
+               this.setLikes(data.likes);
+            })
+            .catch((err) => {
+                console.error('Erro ao atualizar curtida:', err);
+            })
+            .finally(() => {
+                this._likeButton.classList.remove('cards__card_loading'); // Remove o estado de carregamento do botão de curtida
+            });
         });
     
         // Verifica se o botão de exclusão existe antes de adicionar o evento

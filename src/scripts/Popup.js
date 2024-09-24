@@ -2,6 +2,9 @@
 export default class Popup {
     constructor(popupSelector) {
         this._popup = document.querySelector(popupSelector);
+        
+        console.log("Valor do seletor",this._popup); // Verifica se o popup está sendo corretamente capturado
+    
         this._handleEscClose = this._handleEscClose.bind(this);
     }
 
