@@ -4,6 +4,7 @@ import { FormValidator } from './scripts/FormValidator.js';
 import { Section } from './scripts/Section.js';
 import PopupWithImage from './scripts/PopupWithImage.js';
 import PopupWithForm from './scripts/PopupWithForm.js';
+import PopupWithConfirmation  from './scripts/PopupWithConfirmation.js';
 import { UserInfo } from './scripts/UserInfo.js';
 import ModalProfile from './scripts/ModalProfile.js';
 import Api from './scripts/Api.js';
@@ -15,7 +16,7 @@ import editIconSrc from './images/edit.svg';
 
 let userId; // Variável que armazenará o ID do usuário logadoconst modalProfile = new ModalProfile('#popup__profile-image'); // Seleção do modal de perfil
 const profileEditButton = document.querySelector(".profile__edit"); // Botão de editar o perfil
- 
+const deleteCardButton = document.querySelector(".cards__card_bin");
 const profileAddButton = document.querySelector(".profile__add"); // Botão de adicionar um novo cartão
 const modalProfile = new ModalProfile('#popup__profile-image');
 const popupProfileSelector = '#popup-profile'; // Seleciona o popup do perfil
@@ -64,7 +65,6 @@ function handleLikeClick(cardId, isLiked) {
 
 
 function handlerDeleteCard(cardId, cardElement) {
-    deletePopup.open(); // Abre o popup para confirmação da exclusão
     deletePopup.setSubmitAction(() => { // Define a ação ao confirmar a exclusão
         api.deleteCard(cardId)
             .then(() => {
@@ -78,7 +78,7 @@ function handlerDeleteCard(cardId, cardElement) {
 }
 
 
-const deletePopup = new PopupWithForm({
+const deletePopup = new PopupWithConfirmation({
     popupSelector: '#popup_type_delete-card',
     handleFormSubmit: (cardId) => {
         api.deleteCard(cardId)
@@ -209,6 +209,8 @@ profileEditButton.addEventListener('click', () => {
 });
 
 deleteCardButton.addEventListener('click', () => {
+    
+    deletePopup.open(); // Abre o popup para confirmação da exclusão
     handlerDeleteCard(cardId, cardElement); // Chame a função para deletar passando o ID e o elemento do cartão
 });
 
