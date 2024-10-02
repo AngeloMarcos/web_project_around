@@ -75,7 +75,9 @@ export default class Api {
         });
     }
     
+    
     deleteCard(cardId) {
+        console.log("api ", cardId)
         return this._fetch(`/cards/${cardId}`, {
             method: 'DELETE',
             headers: this._headers

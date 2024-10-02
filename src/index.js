@@ -16,14 +16,10 @@ import editIconSrc from './images/edit.svg';
 
 let userId; // Variável que armazenará o ID do usuário logadoconst modalProfile = new ModalProfile('#popup__profile-image'); // Seleção do modal de perfil
 const profileEditButton = document.querySelector(".profile__edit"); // Botão de editar o perfil
-const deleteCardButton = document.querySelector(".cards__card_bin");
 const profileAddButton = document.querySelector(".profile__add"); // Botão de adicionar um novo cartão
 const modalProfile = new ModalProfile('#popup__profile-image');
-const popupProfileSelector = '#popup-profile'; // Seleciona o popup do perfil
 const popupProfileImage = document.querySelector(".profile__image-container");; // Seleciona o popup de edição da imagem do perfil
-const popupCardSelector = '#popup-card'; // Seleciona o popup de criação de cartão
 const cardsContainerSelector = '.card__container'; // Seleciona o contêiner de cartões
-const linkImageProfile  = document.querySelector(".popup_profile-img-link");
 const profileImage = document.querySelector('.profile__image');
 profileImage.src = profileImageSrc;
 
@@ -64,26 +60,16 @@ function handleLikeClick(cardId, isLiked) {
 }
 
 
-function handlerDeleteCard(cardId, cardElement) {
-    deletePopup.setSubmitAction(() => { // Define a ação ao confirmar a exclusão
-        api.deleteCard(cardId)
-            .then(() => {
-                cardElement.remove(); // Remove o cartão do DOM
-                deletePopup.close(); // Fecha o popup
-            })
-            .catch((err) => {
-                console.error('Erro ao excluir o cartão:', err);
-            });
-    });
-}
 
 
 const deletePopup = new PopupWithConfirmation({
     popupSelector: '#popup_type_delete-card',
-    handleFormSubmit: (cardId) => {
-        api.deleteCard(cardId)
+    handleFormSubmit: (card) => {
+        api.deleteCard(card._id)
             .then(() => {
-                cardElement.remove(); // Remove o cartão do DOM após a exclusão
+                console.log("card", card)
+              card._element.remove(); // Remove o cartão do DOM após a exclusão
+             
                 deletePopup.close(); // Fecha o popup
             })
             .catch((err) => {
@@ -91,6 +77,7 @@ const deletePopup = new PopupWithConfirmation({
             });
     }
 });
+deletePopup.setEventListeners();
 // Função para criar um novo cartão com as informações fornecidas
 function createCard(data) {
     const card = new Card(
@@ -104,8 +91,12 @@ function createCard(data) {
         },
         '#template-card',
       ({name, link}) => handleCardClick({name, link}),  // Define o comportamento ao clicar no cartão
-       (cardId, isLiked, card) => handleLikeClick(cardId, isLiked, card), // Define o comportamento ao curtir o cartão
-        (cardId, cardElement) => handlerDeleteCard(cardId, cardElement)
+       (cardId, isLiked, card) => handleLikeClick(cardId, isLiked, card), 
+        () => {
+            deletePopup.open(card)
+            
+        }
+
     );
     return card.generateCard(); // Gera o elemento HTML do cartão
 }
@@ -176,14 +167,7 @@ const addCardPopup = new PopupWithForm({
         });
     }
 });
-const popupForm = new PopupWithForm({
-    popupSelector: '.popup_type_delete-card',
-    handleFormSubmit: (formData) => {
-        
-   }
-});
 
-popupForm.setEventListeners();
 addCardPopup.setEventListeners(); // Adiciona os eventos de escuta para o popup de adicionar cartão
 
 const editProfilePopup = new PopupWithForm({
@@ -208,16 +192,12 @@ profileEditButton.addEventListener('click', () => {
     editProfilePopup.open(); // Abre o popup de edição de perfil
 });
 
-deleteCardButton.addEventListener('click', () => {
-    
-    deletePopup.open(); // Abre o popup para confirmação da exclusão
-    handlerDeleteCard(cardId, cardElement); // Chame a função para deletar passando o ID e o elemento do cartão
-});
 
 // Abre o modal de edição de imagem do perfil ao clicar na imagem
 popupProfileImage.addEventListener('click', () => {
     modalProfile.open();
 });
+
 
 // Abre o popup de adicionar cartão ao clicar no botão de adicionar
 profileAddButton.addEventListener('click', () => {

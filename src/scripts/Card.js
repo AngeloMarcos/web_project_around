@@ -1,5 +1,5 @@
 class Card {
-    constructor(data, templateSelector, handleCardClick, handleLikeClick, handleDeleteClick) {
+    constructor(data, templateSelector, handleCardClick, handleLikeClick,  deletePopup) {
         this._name = data.name;
         this._link = data.link;
         this._likes = data.likes;
@@ -9,12 +9,12 @@ class Card {
         this._templateSelector = templateSelector;
         this._handleCardClick = handleCardClick;
         this._handleLikeClick = handleLikeClick
-        this._handleDeleteClick = handleDeleteClick;
+        this._deletePopup = deletePopup;
     }
 
     _getTemplate() {
         const templateElement = document.querySelector(this._templateSelector);
-        return templateElement.content.cloneNode(true);
+        return templateElement.content.querySelector(".cards__card").cloneNode(true);
     }
 
     generateCard() {
@@ -52,22 +52,7 @@ class Card {
         // Verifica se o botão de exclusão existe antes de adicionar o evento
         if (this._deleteButton) {
             this._deleteButton.addEventListener('click', () => {
-                // Abrir popup de confirmação de exclusão
-                deletePopup.open();
-    
-                // Listener para a confirmação da exclusão no popup
-                deletePopup.setSubmitAction(() => {
-                    // Chama a API para excluir o cartão
-                    api.deleteCard(this._id)
-                        .then(() => {
-                            // Remove o cartão do DOM após a exclusão
-                            this._element.remove();
-                            deletePopup.close(); // Fecha o popup após a exclusão
-                        })
-                        .catch((err) => {
-                            console.error('Erro ao excluir o cartão:', err);
-                        });
-                });
+                this._deletePopup(this._id);
             });
         }
     }

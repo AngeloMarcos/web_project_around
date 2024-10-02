@@ -15,9 +15,5 @@ export default class PopupWithImage extends Popup {
         this._captionElement.textContent = name;
         this._popup.classList.add('modalImage_opened');
     }
-        close (){
-        
-        super.close();
-        this._popup.classList.remove('modalImage_opened');
-    }
+      
 }
